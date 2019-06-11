@@ -153,13 +153,16 @@ When landing the PR add the `Backport-PR-URL:` line to each commit. Close the
 backport PR with `Landed in ...`. Update the label on the original PR from
 `backport-requested-vN.x` to `backported-to-vN.x`.
 
+Check for PRs with the label `lts-watch-vN.x` - these labels are added to PRs that
+are candidates for being backported to LTS release lines.
+
 To determine the relevant commits, use
 [`branch-diff`](https://github.com/nodejs/branch-diff). The tool is available on
 npm and should be installed globally or run with `npx`. It depends on our commit
 metadata, as well as the GitHub labels such as `semver-minor` and
-`semver-major`. One drawback is that when the `PR-URL` metadata is accidentally
-omitted from a commit, the commit will show up because it's unsure if it's a
-duplicate or not.
+`semver-major`. When the `PR-URL` metadata is accidentally
+omitted from a commit, the commit will always show up because it's unsure if it's
+ a duplicate or not.
 
 For a list of commits that could be landed in a patch release on v1.x:
 
@@ -176,12 +179,12 @@ Carefully review the list of commits:
 should only be cherry-picked when appropriate for the type of release being
 made.
 - If you think it's risky so should wait for a while, add the `baking-for-lts`
-   tag.
+ label.
 
 When cherry-picking commits, if there are simple conflicts you can resolve
 them. Otherwise, add the `backport-requested-vN.x` label to the original PR
 and post a comment stating that it does not land cleanly and will require a
-backport PR.
+manual backport.
 
 If commits were cherry-picked in this step, check that the test still pass and
 push to the staging branch to keep it up-to-date.
@@ -192,7 +195,7 @@ $ git push upstream v1.x-staging
 
 ### 2. Create a new branch for the release
 
-Create a new branch named `vx.y.z-proposal`, off the corresponding staging
+Create a new branch named `vx.y.z-proposal`, off of the corresponding staging
 branch.
 
 ```console
@@ -270,7 +273,7 @@ There is a separate `CHANGELOG_Vx.md` file for each major Node.js release line.
 These are located in the `doc/changelogs/` directory. Once the formatted list of
 changes is collected, it must be added to the top of the relevant changelog file
 in the release branch (e.g. a release for Node.js v4 would be added to the
-`/doc/changelogs/CHANGELOG_V4.md`).
+`doc/changelogs/CHANGELOG_V4.md`).
 
 **Please do *not* add the changelog entries to the root `CHANGELOG.md` file.**
 
@@ -290,7 +293,6 @@ The new entry should take the following form:
 ### Commits
 
 * Include the full list of commits since the last release here. Do not include "Working on X.Y.Z+1" commits.
-```
 
 The release type should be either Current, LTS, or Maintenance, depending on the
 type of release being produced.
@@ -302,15 +304,19 @@ label:
 $ branch-diff upstream/v1.x v1.2.3-proposal --require-label=notable-change -format=simple
 ```
 
-Be sure that the `<a>` tag, as well as the two headings, are not indented at
-all.
+Be sure that the `<a>` tag, as well as the two headings, are not indented.
 
 At the top of the root `CHANGELOG.md` file, there is a table indexing all
-releases in each major release line. A link to the new release needs to be added
-to it. Follow the existing examples and be sure to add the release to the *top*
-of the list. The most recent release for each release line is shown in **bold**
-in the index. When updating the index, please make sure to update the display
-accordingly by removing the bold styling from the previous release.
+releases in each major release line. A link to the new release needs to be
+added to the *top* of the list:
+
+```
+<b><a href="doc/changelogs/CHANGELOG_Vx.md#x.y.z">x.y.z</a></b><br/>
+```
+
+The most recent release for each release line is shown in **bold**. When
+ updating the index, please make sure to remove the bold styling from the
+ previous release.
 
 #### Step 3: Update any REPLACEME and DEP00XX tags in the docs
 
