@@ -770,7 +770,7 @@ announced immediately following the release of 12.0.0).
 
 ### Release Branch
 
-Approximately three months before a major release, new `vN.x` and
+Approximately two months before a major release, new `vN.x` and
 `vN.x-staging` branches (where `N` indicates the major release) should be
 created as forks of the `master` branch. Up until one month before the release
 date, these must be kept in sync with `master` and must not be considered to
@@ -785,14 +785,10 @@ from the TSC.
 
 ### Release Proposal
 
-A draft release proposal should be created two months before the release. A
+A draft release proposal should be created 6 weeks before the release. A
 separate `vN.x-proposal` branch should be created that tracks the `vN.x`
 branch. This branch will contain the draft release commit (with the draft
 changelog).
-
-Notify the `@nodejs/npm` team in the release proposal PR to inform them of the
-upcoming release. `npm` maintains a list of [supported versions](https://github.com/npm/cli/blob/latest/lib/utils/unsupported.js#L3)
-that will need updating to include the new major release.
 
 ### Test Releases and Release Candidates
 
@@ -803,8 +799,7 @@ Release Candidates should be generated from the `vN.x-proposal` branch starting
 at about 4 weeks before the release, with a target of one release candidate
 per week.
 
-Always run test releases and release candidates through the Canary in the
-Goldmine tool for additional testing.
+Always run test releases and release candidates through CITGM for additional testing.
 
 ### Changelogs
 
